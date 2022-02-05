@@ -6,8 +6,11 @@ app.get('/',(req,res)=>{
     res.send('hello');
 });
 
+
 app.get('/posts',(req,res)=>{
     res.send('bye');
 });
-
-app.listen(3000);
+const port = 3000;
+app.listen(port,(req,res)=>{
+    console.log(`App running in port ${port}...`);
+});
