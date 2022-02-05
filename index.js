@@ -1,40 +1,21 @@
 const express = require('express');
-const fs = require('fs');
+
 const morgan = require('morgan');
 const app = express();
-
+const tourRouter=require('./routes/tourRoutes')
 app.use(morgan('dev'));
 
 app.use(express.json());
 
-const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
-);
+app.use('/api/v1/tours',tourRouter);
 
-const getAlltours = (req,res)=>{
-    res.status(200).json({
-        status:'success',
-        result:tours.length,
-        data:{
-            tours
-        }
-    });
-}
-app.get('/api/v1/tours', getAlltours);
 
-app.get('/api/v1/tours/:id',(req,res)=>{
-    console.log(req.params);
 
-    const id=req.params.id * 1;
-    const tour = tours.find(el => el.id === id);
-    res.status(200).json({
-        status:'success',
-        // result:tours.length,
-        data:{
-            tour
-        }
-    });
-});
+
+
+
+
+
 
 const port = 3000;
 app.listen(port,(req,res)=>{
