@@ -22,7 +22,8 @@ exports.create = (req,res)=>{
     user
     .save(user)
     .then(data=>{
-        res.send(data)
+        // res.send(data)
+        res.redirect('/add-user')
     })
     .catch(err=>{
         res.status(500).send({
@@ -34,15 +35,33 @@ exports.create = (req,res)=>{
 //retrive and return all/single users
 
 exports.find = (req,res)=>{
-    Userdb.find()
-    .then(user=>{
-        res.send(user)
-    })
-    .catch(err=>{
-        res.status(500).send({
-            messsage:err.message || "error"
+    if(req.query.id)
+    {
+        const id=req.query.id;
+        Userdb.findById(id)
+        .then(data=>{
+            if(!data){
+                res.status(404).send({message:"wrong"})
+            }
+            else{
+                res.send(data);
+            }
         })
-    })
+        .catch(err=>{
+            res.status(500).send({message:"error"})
+        })
+    }else{
+        Userdb.find()
+        .then(user=>{
+            res.send(user)
+        })
+        .catch(err=>{
+            res.status(500).send({
+                messsage:err.message || "error"
+            })
+        })
+    }
+
 }
 
 //update 
